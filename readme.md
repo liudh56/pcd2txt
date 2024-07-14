@@ -1,5 +1,15 @@
 # 说明
 
+## 环境
+
+- python3.11
+
+- open3d
+
+- numpy
+
+## 文件说明
+
 `pcd_binary2ascii.py` binary格式和ascii格式的pcd文件互转
 
 > 需要安装`open3d`
