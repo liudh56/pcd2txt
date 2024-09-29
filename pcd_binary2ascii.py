@@ -1,46 +1,46 @@
 import os
 import open3d as o3d
 
-def binary_to_ascii(pcd_name):
+def binary_to_ascii(pcd_name, output_dir):
     if not os.path.isfile(pcd_name):
         print(f"文件不存在: {pcd_name}")
         return
     try:
-        # 读取binary格式的PCD文件
         pcd = o3d.io.read_point_cloud(pcd_name)
-        # 将点云从binary格式转换为ASCII格式
-        o3d.io.write_point_cloud(pcd_name.rsplit('.', 1)[0] + "_ascii.pcd", pcd, write_ascii=True)
+        output_path = os.path.join(output_dir, os.path.basename(pcd_name).rsplit('.', 1)[0] + "_ascii.pcd")
+        o3d.io.write_point_cloud(output_path, pcd, write_ascii=True)
     except Exception as e:
         print(f"转换失败: {e}")
 
-def ascii_to_binary(pcd_name):
+def ascii_to_binary(pcd_name, output_dir):
     if not os.path.isfile(pcd_name):
         print(f"文件不存在: {pcd_name}")
         return
     try:
-        # 读取ascii格式的PCD文件
         pcd = o3d.io.read_point_cloud(pcd_name)
-        # 将点云从ascii格式转换为binary格式
-        o3d.io.write_point_cloud(pcd_name.rsplit('.', 1)[0] + "_binary.pcd", pcd, write_ascii=False)
+        output_path = os.path.join(output_dir, os.path.basename(pcd_name).rsplit('.', 1)[0] + "_binary.pcd")
+        o3d.io.write_point_cloud(output_path, pcd, write_ascii=False)
     except Exception as e:
         print(f"转换失败: {e}")
 
 def convert_single_file():
     pcd_name = input("请输入PCD文件名: ")
-    convert_file(pcd_name+ ".pcd")
+    output_dir = r"./2txt"
+    convert_file(pcd_name + ".pcd", output_dir)
 
 def convert_directory(conversion_type):
-    directory = os.path.dirname(os.path.abspath(__file__))
+    directory = r"./pcd"
+    output_dir = r"./2txt"
     for filename in os.listdir(directory):
         if filename.endswith(".pcd"):
             if conversion_type == '1':
-                binary_to_ascii(os.path.join(directory, filename))
+                binary_to_ascii(os.path.join(directory, filename), output_dir)
                 print(f"文件已转换为ASCII格式: {filename.rsplit('.', 1)[0]}_ascii.pcd")
             elif conversion_type == '2':
-                ascii_to_binary(os.path.join(directory, filename))
+                ascii_to_binary(os.path.join(directory, filename), output_dir)
                 print(f"文件已转换为Binary格式: {filename.rsplit('.', 1)[0]}_binary.pcd")
 
-def convert_file(pcd_name):
+def convert_file(pcd_name, output_dir):
     print("选择转换类型:")
     print("1. Binary to ASCII")
     print("2. ASCII to Binary")
@@ -51,10 +51,10 @@ def convert_file(pcd_name):
         return
 
     if choice == '1':
-        binary_to_ascii(pcd_name)
+        binary_to_ascii(pcd_name, output_dir)
         print(f"文件已转换为ASCII格式: {pcd_name.rsplit('.', 1)[0]}_ascii.pcd")
     elif choice == '2':
-        ascii_to_binary(pcd_name)
+        ascii_to_binary(pcd_name, output_dir)
         print(f"文件已转换为Binary格式: {pcd_name.rsplit('.', 1)[0]}_binary.pcd")
 
 def main():

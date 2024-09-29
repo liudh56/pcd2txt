@@ -1,6 +1,7 @@
 import os
 import numpy as np
 
+
 def pcd2txt(input_pcd, output_txt):
     # 读取PCD文件
     try:
@@ -23,8 +24,6 @@ def pcd2txt(input_pcd, output_txt):
                 x, y, z = values[:3]
                 if np.isfinite(x) and np.isfinite(y) and np.isfinite(z):
                     result.append([x, y, z])
-                else:
-                    print(f'无效点: {x} {y} {z}')
             else:
                 print(f'解析失败的行: {line.strip()}')
         except ValueError:
@@ -39,16 +38,18 @@ def pcd2txt(input_pcd, output_txt):
 
 def convert_single_file():
     input_pcd = input("请输入PCD文件名: ")
-    output_txt = input_pcd.rsplit('.', 1)[0] + ".txt"
+    output_dir = r"./avg"
+    output_txt = os.path.join(output_dir, input_pcd.rsplit('.', 1)[0] + ".txt")
     pcd2txt(input_pcd, output_txt)
     print(f"文件已转换并保存为: {output_txt}")
 
 def convert_directory():
-    directory = os.path.dirname(os.path.abspath(__file__))
+    directory = r"./2txt"
+    output_dir = r"./avg"
     for filename in os.listdir(directory):
         if filename.endswith(".pcd"):
             input_pcd = os.path.join(directory, filename)
-            output_txt = os.path.join(directory, filename.rsplit('.', 1)[0] + ".txt")
+            output_txt = os.path.join(output_dir, filename.rsplit('.', 1)[0] + ".txt")
             pcd2txt(input_pcd, output_txt)
             print(f"文件已转换并保存为: {output_txt}")
 
